@@ -1,0 +1,9 @@
+<h3>My Instruments</h3>
+
+<ul id="instruments">
+  <%= for instrument <- @instruments do %>
+    <.instrument_entry instrument={instrument} />
+  <% end %>
+</ul>
+
+<.add_instrument button_disabled={@add_instrument_disabled} />
