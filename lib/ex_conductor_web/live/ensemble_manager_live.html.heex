@@ -1,5 +1,12 @@
 <ul id="ensemble-members">
+  <%= for {_, instrument} <- @ensemble do %>
+    <li><%= instrument %></li>
+  <% end %>
 </ul>
 
 <.join_ensemble_link ensemble_id={@ensemble_id} />
 
+
+<%= if Enum.count(@ensemble) > 0 do %>
+  <button id="generate-score">Generate Score</button>
+<% end %>

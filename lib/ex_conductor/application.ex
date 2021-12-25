@@ -15,9 +15,10 @@ defmodule ExConductor.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: ExConductor.PubSub},
       # Start the Endpoint (http/https)
-      ExConductorWeb.Endpoint
+      ExConductorWeb.Endpoint,
       # Start a worker by calling: ExConductor.Worker.start_link(arg)
       # {ExConductor.Worker, arg}
+      ExConductor.EnsembleRegistry
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

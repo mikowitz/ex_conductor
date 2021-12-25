@@ -4,6 +4,8 @@ defmodule ExConductorWeb.MyInstrumentsLive do
   alias ExConductor.Accounts
   alias Accounts.User
 
+  import ExConductorWeb.LiveHelpers
+
   def mount(_params, session, socket) do
     socket =
       socket
@@ -62,23 +64,4 @@ defmodule ExConductorWeb.MyInstrumentsLive do
     </form>
     """
   end
-
-  defp assign_instruments(socket) do
-    user = socket.assigns.current_user
-
-    assign(socket, instruments: user.instruments)
-  end
-
-  defp assign_user(socket, session) do
-    assign(socket, current_user: get_current_user(session))
-  end
-
-  defp get_current_user(%{"user_token" => user_token}) do
-    case Accounts.get_user_by_session_token(user_token) do
-      %User{} = user -> user
-      _ -> nil
-    end
-  end
-
-  defp get_current_user(_), do: nil
 end

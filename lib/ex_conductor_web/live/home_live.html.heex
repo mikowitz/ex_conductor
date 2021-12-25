@@ -1,7 +1,14 @@
-<button id="start-ensemble" phx-click="start-ensemble">Start Ensemble</button>
+<div>
+  <button id="start-ensemble" phx-click="start-ensemble">Start Ensemble</button>
+</div>
 
-<form id="join-ensemble" phx-submit="join-ensemble">
-  <input type="text" placeholder="Ensemble ID" />
-  <button type="submit">Join Ensemble</button>
-</form>
-
+<div>
+  <%= if Enum.any?(@current_user.instruments) do %>
+    <form id="join-ensemble" phx-submit="join-ensemble">
+      <input type="text" placeholder="Ensemble ID" />
+      <button type="submit">Join Ensemble</button>
+    </form>
+  <% else %>
+    <%= live_redirect "Add an instrument", to: Routes.live_path(@socket, ExConductorWeb.MyInstrumentsLive) %> to be able to join an ensemble
+  <% end %>
+</div>

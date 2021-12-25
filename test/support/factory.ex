@@ -13,4 +13,13 @@ defmodule ExConductor.Factory do
     |> User.registration_changeset(attrs)
     |> Ecto.Changeset.apply_changes()
   end
+
+  def user_with_violin_factory do
+    struct!(
+      user_factory(),
+      %{
+        instruments: ["violin"]
+      }
+    )
+  end
 end

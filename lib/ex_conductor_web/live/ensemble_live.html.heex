@@ -1,0 +1,14 @@
+<%= if @ensemble_id do %>
+  <form id="select-instrument" phx-change="select-instrument">
+    <select name="instrument">
+      <%= for inst <- @current_user.instruments do %>
+        <option value="">Select your instrument</option>
+        <option value={inst}><%= inst %></option>
+      <% end %>
+    </select>
+  </form>
+<% end %>
+
+<%= if @bad_ensemble_id do %>
+  No existing ensemble found with id <b><%= @bad_ensemble_id %></b>
+<% end %>

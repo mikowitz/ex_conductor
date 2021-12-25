@@ -27,7 +27,8 @@ defmodule ExConductorWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live "/home", HomeLive
-    live "/ensemble_manager", EnsembleManagerLive
+    live "/ensemble_manager/:id", EnsembleManagerLive
+    live "/ensemble/:id", EnsembleLive
     live "/my_instruments", MyInstrumentsLive
   end
 
