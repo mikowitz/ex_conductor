@@ -7,6 +7,10 @@ defmodule ExConductorWeb.EnsembleManagerTest do
 
   @ensemble_id "abcdef12345"
 
+  setup do
+    ExConductor.EnsembleRegistry.reset!()
+  end
+
   test "shows correct state for existing ensemble", %{conn: conn} do
     manager = insert(:user)
     manager_conn = log_in_user(conn, manager)
@@ -25,9 +29,9 @@ defmodule ExConductorWeb.EnsembleManagerTest do
     user = insert(:user)
     conn = log_in_user(conn, user)
 
-    {:ok, _, html} = live(conn, "/ensemble/badid")
+    {:ok, _, html} = live(conn, "/ensemble/#{@ensemble_id}")
 
-    assert html =~ "No existing ensemble found with id <b>badid</b>"
+    assert html =~ "No existing ensemble found with id <b>#{@ensemble_id}</b>"
   end
 
   test "selecting an instrument allows the manager to generate a score", %{conn: conn} do

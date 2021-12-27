@@ -8,5 +8,14 @@
 
 
 <%= if Enum.count(@ensemble) > 0 do %>
-  <button id="generate-score">Generate Score</button>
+  <button id="generate-score" phx-click="generate-score" phx-disable-with="Generating Score...">Generate Score</button>
 <% end %>
+
+<%= if @score do %>
+  <img id="score" src={Score.current_page(@score)} data-page={@score.current_page} alt="current score page" />
+
+  <%= for {page, index} <- Enum.with_index(@score.pages, 1) do %>
+    <img class="score-preview" data-page={index} src={"data:image/png;base64,#{page}"} />
+  <% end %>
+<% end %>
+

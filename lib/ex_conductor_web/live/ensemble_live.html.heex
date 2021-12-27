@@ -12,3 +12,7 @@
 <%= if @bad_ensemble_id do %>
   No existing ensemble found with id <b><%= @bad_ensemble_id %></b>
 <% end %>
+
+<%= if @score_page do %>
+  <img id="score" src={"data:image/png;base64,#{@score_page}"} alt="current score page" />
+<% end %>

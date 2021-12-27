@@ -1,6 +1,8 @@
 defmodule ExConductorWeb.EnsembleManagerLive do
   use ExConductorWeb, :live_view
 
+  alias ExConductor.Score
+
   alias ExConductor.EnsembleRegistry
   alias ExConductorWeb.Endpoint
 
@@ -9,6 +11,7 @@ defmodule ExConductorWeb.EnsembleManagerLive do
       socket
       |> assign(ensemble_id: params["id"])
       |> assign(ensemble: %{})
+      |> assign(score: nil)
 
     EnsembleRegistry.register(params["id"])
 
@@ -17,10 +20,43 @@ defmodule ExConductorWeb.EnsembleManagerLive do
     {:ok, socket}
   end
 
+  def handle_event("generate-score", _, socket) do
+    send(self(), :generate_score)
+
+    socket =
+      socket
+      |> put_flash(:info, "Generating score...")
+
+    {:noreply, socket}
+  end
+
   def handle_info(%{event: "ensemble_changed", payload: payload}, socket) do
     socket =
       socket
       |> assign(ensemble: payload[:ensemble])
+
+    {:noreply, socket}
+  end
+
+  def handle_info(%{event: "score_page"}, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_info(:generate_score, socket) do
+    score = ExConductor.Score.generate(socket.assigns.ensemble_id, socket.assigns.ensemble)
+
+    socket =
+      socket
+      |> assign(score: score)
+      |> put_flash(:info, "Score generated")
+
+    current_page = Score.current_page(score)
+
+    Endpoint.broadcast!(
+      "ensemble:#{socket.assigns.ensemble_id}",
+      "score_page",
+      score_page: current_page
+    )
 
     {:noreply, socket}
   end

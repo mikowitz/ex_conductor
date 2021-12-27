@@ -11,6 +11,7 @@ defmodule ExConductorWeb.EnsembleLive do
       socket
       |> assign_user(session)
       |> assign_ensemble_id(params["id"])
+      |> assign(score_page: nil)
 
     {:ok, socket}
   end
@@ -30,6 +31,18 @@ defmodule ExConductorWeb.EnsembleLive do
       socket.assigns.current_user.id,
       instrument
     )
+
+    {:noreply, socket}
+  end
+
+  def handle_info(%{event: "ensemble_changed"}, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_info(%{event: "score_page", payload: payload}, socket) do
+    socket =
+      socket
+      |> assign(score_page: payload[:score_page])
 
     {:noreply, socket}
   end
