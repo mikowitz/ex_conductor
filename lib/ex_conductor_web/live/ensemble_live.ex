@@ -60,4 +60,18 @@ defmodule ExConductorWeb.EnsembleLive do
       |> assign(:ensemble_id, nil)
     end
   end
+
+  def current_score_page(assigns) do
+    img_src = image_data(assigns.src)
+
+    ~H"""
+    <img
+      id="score"
+      src={img_src}
+      alt="current score page"
+    />
+    """
+  end
+
+  defp image_data(image_src), do: "data:image/png;base64,#{image_src}"
 end

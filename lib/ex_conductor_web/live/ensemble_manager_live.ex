@@ -30,6 +30,21 @@ defmodule ExConductorWeb.EnsembleManagerLive do
     {:noreply, socket}
   end
 
+  def handle_event("clear-score", _, socket) do
+    socket =
+      socket
+      |> assign(score: nil)
+      |> put_flash(:info, "Score cleared")
+
+    Endpoint.broadcast!(
+      "ensemble:#{socket.assigns.ensemble_id}",
+      "score_page",
+      score_page: nil
+    )
+
+    {:noreply, socket}
+  end
+
   def handle_info(%{event: "ensemble_changed", payload: payload}, socket) do
     socket =
       socket
@@ -73,4 +88,33 @@ defmodule ExConductorWeb.EnsembleManagerLive do
     </div>
     """
   end
+
+  def current_score_page(assigns) do
+    img_src = image_data(assigns.src)
+
+    ~H"""
+    <img
+      id="score"
+      src={img_src}
+      data-page={@page_number}
+      alt="current score page"
+    />
+    """
+  end
+
+  def score_page_preview(assigns) do
+    img_src = image_data(assigns.src)
+    alt = "Score page #{assigns.page_number}"
+
+    ~H"""
+    <img
+      class="score-preview"
+      data-page={@page_number}
+      src={img_src}
+      alt={alt}
+    />
+    """
+  end
+
+  defp image_data(image_src), do: "data:image/png;base64,#{image_src}"
 end

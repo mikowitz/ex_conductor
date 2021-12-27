@@ -12,10 +12,12 @@
 <% end %>
 
 <%= if @score do %>
-  <img id="score" src={Score.current_page(@score)} data-page={@score.current_page} alt="current score page" />
+  <button id="clear-score" phx-click="clear-score">Clear Score</button>
+
+  <.current_score_page src={Score.current_page(@score)} page_number={@score.current_page} />
 
   <%= for {page, index} <- Enum.with_index(@score.pages, 1) do %>
-    <img class="score-preview" data-page={index} src={"data:image/png;base64,#{page}"} />
+    <.score_page_preview src={page} page_number={index} />
   <% end %>
 <% end %>
 
