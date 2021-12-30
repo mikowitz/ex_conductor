@@ -47,12 +47,6 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-version_cmd_output = to_string(:os.cmd('lilypond --version'))
-[[version] | _] = Regex.scan(~r/[\d.]+/, version_cmd_output)
-
-config :satie,
-  lilypond_version: version
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

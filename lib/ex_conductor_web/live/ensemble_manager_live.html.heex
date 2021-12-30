@@ -17,7 +17,7 @@
   <.current_score_page src={Score.current_page(@score)} page_number={@score.current_page} />
 
   <%= for {page, index} <- Enum.with_index(@score.pages, 1) do %>
-    <.score_page_preview src={page} page_number={index} />
+    <.score_page_preview src={page} page_number={index} current_page={@score.current_page} />
   <% end %>
 <% end %>
 

@@ -118,3 +118,13 @@
   0% { opacity: 1; }
   100% { opacity: 0; }
 }
+
+img.score-preview {
+  max-width: 150px;
+}
+
+img.score-preview.current {
+  border: 1px solid green;
+}
+
+

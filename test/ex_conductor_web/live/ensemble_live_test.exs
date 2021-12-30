@@ -9,6 +9,12 @@ defmodule ExConductorWeb.EnsembleManagerTest do
 
   setup do
     ExConductor.EnsembleRegistry.reset!()
+
+    on_exit(fn ->
+      for file <- Path.wildcard("scores/#{@ensemble_id}*") do
+        File.rm(file)
+      end
+    end)
   end
 
   test "shows correct state for existing ensemble", %{conn: conn} do

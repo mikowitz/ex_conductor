@@ -31,6 +31,8 @@ defmodule ExConductorWeb.EnsembleManagerLive do
   end
 
   def handle_event("clear-score", _, socket) do
+    Score.clear!(socket.assigns.score)
+
     socket =
       socket
       |> assign(score: nil)
@@ -39,7 +41,28 @@ defmodule ExConductorWeb.EnsembleManagerLive do
     Endpoint.broadcast!(
       "ensemble:#{socket.assigns.ensemble_id}",
       "score_page",
-      score_page: nil
+      score_page: nil,
+      page_number: nil
+    )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("change-page", %{"page" => page_number}, socket) do
+    {new_page_number, ""} = Integer.parse(page_number)
+    score = Score.set_page(socket.assigns.score, new_page_number)
+
+    socket =
+      socket
+      |> assign(score: score)
+
+    current_page = Score.current_page(score)
+
+    Endpoint.broadcast!(
+      "ensemble:#{socket.assigns.ensemble_id}",
+      "score_page",
+      score_page: current_page,
+      page_number: score.current_page
     )
 
     {:noreply, socket}
@@ -70,7 +93,8 @@ defmodule ExConductorWeb.EnsembleManagerLive do
     Endpoint.broadcast!(
       "ensemble:#{socket.assigns.ensemble_id}",
       "score_page",
-      score_page: current_page
+      score_page: current_page,
+      page_number: score.current_page
     )
 
     {:noreply, socket}
@@ -106,12 +130,21 @@ defmodule ExConductorWeb.EnsembleManagerLive do
     img_src = image_data(assigns.src)
     alt = "Score page #{assigns.page_number}"
 
+    classes =
+      [
+        "score-preview",
+        if(assigns.page_number == assigns.current_page, do: "current", else: nil)
+      ]
+      |> Enum.reject(&is_nil/1)
+
     ~H"""
     <img
-      class="score-preview"
+      class={classes}
       data-page={@page_number}
       src={img_src}
       alt={alt}
+      phx-click="change-page"
+      phx-value-page={@page_number}
     />
     """
   end

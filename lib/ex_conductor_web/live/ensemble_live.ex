@@ -12,6 +12,7 @@ defmodule ExConductorWeb.EnsembleLive do
       |> assign_user(session)
       |> assign_ensemble_id(params["id"])
       |> assign(score_page: nil)
+      |> assign(page_number: nil)
 
     {:ok, socket}
   end
@@ -43,6 +44,7 @@ defmodule ExConductorWeb.EnsembleLive do
     socket =
       socket
       |> assign(score_page: payload[:score_page])
+      |> assign(page_number: payload[:page_number])
 
     {:noreply, socket}
   end
@@ -68,7 +70,9 @@ defmodule ExConductorWeb.EnsembleLive do
     <img
       id="score"
       src={img_src}
+      data-page={@page_number}
       alt="current score page"
+
     />
     """
   end
