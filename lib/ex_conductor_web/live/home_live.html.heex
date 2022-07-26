@@ -5,7 +5,7 @@
 <div>
   <%= if Enum.any?(@current_user.instruments) do %>
     <form id="join-ensemble" phx-submit="join-ensemble">
-      <input type="text" placeholder="Ensemble ID" />
+      <input type="text" name="ensemble_id" placeholder="Ensemble ID" />
       <button type="submit">Join Ensemble</button>
     </form>
   <% else %>

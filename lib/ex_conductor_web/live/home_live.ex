@@ -21,6 +21,13 @@ defmodule ExConductorWeb.HomeLive do
      )}
   end
 
+  def handle_event("join-ensemble", %{"ensemble_id" => ensemble_id}, socket) do
+    {:noreply,
+     push_redirect(socket,
+       to: Routes.live_path(socket, ExConductorWeb.EnsembleLive, ensemble_id)
+     )}
+  end
+
   defp generate_ensemble_id do
     :crypto.strong_rand_bytes(16)
     |> Base.encode16(case: :lower)
