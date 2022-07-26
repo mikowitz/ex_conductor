@@ -19,6 +19,7 @@ defmodule ExConductor.Score do
       pages
       |> Enum.filter(&String.ends_with?(&1, ".png"))
       |> Enum.filter(&String.contains?(&1, ensemble_id))
+      |> Enum.sort()
       |> Enum.filter(fn path ->
         {:ok, stats} = File.stat("scores/" <> path, time: :posix)
         stats.ctime > start_time
