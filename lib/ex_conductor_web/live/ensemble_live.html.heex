@@ -2,8 +2,8 @@
   <form id="select-instrument" phx-change="select-instrument">
     <fieldset {if @score_page, do: %{disabled: true}, else: %{}}>
       <select name="instrument">
+        <option value="">Select your instrument</option>
         <%= for inst <- @current_user.instruments do %>
-          <option value="">Select your instrument</option>
           <option value={inst}><%= inst %></option>
         <% end %>
       </select>
